@@ -1,4 +1,4 @@
-package com.tatianacarvajal.schooldb;
+package model;
 
 /**
  *
