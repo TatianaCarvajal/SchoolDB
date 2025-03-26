@@ -34,5 +34,5 @@ public class Student {
         this.studentSurname = studentSurname;
     }
     
-      
+    
 }

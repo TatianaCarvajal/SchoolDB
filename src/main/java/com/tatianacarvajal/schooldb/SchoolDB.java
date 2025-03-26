@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.tatianacarvajal.schooldb;
+
+import igu.StudentForm;
 
 /**
  *
@@ -11,6 +9,7 @@ package com.tatianacarvajal.schooldb;
 public class SchoolDB {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        StudentForm form = new StudentForm();
+        form.setVisible(true);
     }
 }

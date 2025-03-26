@@ -1,18 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package igu;
+
+import javax.swing.JOptionPane;
+import model.Student;
+import persistence.ConnectionImplementor;
+import persistence.PersistenceRepository;
 
 /**
  *
  * @author tatianacarvajal
  */
 public class StudentForm extends javax.swing.JFrame {
+    
+    PersistenceRepository persistence = new ConnectionImplementor();
 
-    /**
-     * Creates new form StudentForm
-     */
     public StudentForm() {
         initComponents();
     }
@@ -56,9 +56,12 @@ public class StudentForm extends javax.swing.JFrame {
             }
         });
 
-        txtSurname.setText("jTextField3");
-
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setText("Update");
 
@@ -175,6 +178,20 @@ public class StudentForm extends javax.swing.JFrame {
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNameActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        String name = txtName.getText();
+        String surname = txtSurname.getText();
+        Student student = new Student();
+        student.setStudentName(name);
+        student.setStudentSurname(surname);
+        boolean isSuccess = persistence.createStudent(student);
+        if (isSuccess) {
+            JOptionPane.showMessageDialog(null, "Student saved successfully");
+        } else {
+            JOptionPane.showMessageDialog(null, "Student save failed");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments

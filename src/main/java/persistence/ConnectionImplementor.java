@@ -2,6 +2,9 @@ package persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.CallableStatement;
+import model.Student;
+
 
 /**
  *
@@ -23,13 +26,25 @@ public class ConnectionImplementor implements PersistenceRepository {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(path, user, password);
+            System.out.println("Connected successfully ");
         } catch (Exception e) {
             System.out.println("Error to connect with the database: " + e.toString());
         }
     }
 
     @Override
-    public void createStudent(int id, String name, String surname) {
+    public boolean createStudent(Student student) {
+        try {
+            String query = "insert into students (name,surname) values (?,?);";
+            CallableStatement statement = connect.prepareCall(query);
 
+            statement.setString(1, student.getStudentName());
+            statement.setString(2, student.getStudentSurname());
+            statement.execute();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error to insert new variables: " + e.toString());
+            return false;
+        }
     }
 }
