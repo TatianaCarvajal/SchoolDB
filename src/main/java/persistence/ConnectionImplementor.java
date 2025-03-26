@@ -3,6 +3,9 @@ package persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import model.Student;
 
 
@@ -46,5 +49,28 @@ public class ConnectionImplementor implements PersistenceRepository {
             System.out.println("Error to insert new variables: " + e.toString());
             return false;
         }
+    }
+
+    @Override
+    public ArrayList<Student> readStudent() {
+
+        ArrayList<Student> students = new ArrayList<Student>();
+
+        try {
+            String query = "SELECT * FROM students;";
+            PreparedStatement statement = connect.prepareCall(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Student student = new Student();
+                student.setStudentCode(resultSet.getInt("Id"));
+                student.setStudentName(resultSet.getString("Name"));
+                student.setStudentSurname(resultSet.getString("Surname"));
+                students.add(student);
+            }
+        } catch (Exception e) {
+            System.out.println("Error to show the table: " + e.toString());
+        }
+        return students;
     }
 }

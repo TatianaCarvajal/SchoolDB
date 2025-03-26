@@ -1,6 +1,8 @@
 package igu;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Student;
 import persistence.ConnectionImplementor;
 import persistence.PersistenceRepository;
@@ -15,6 +17,11 @@ public class StudentForm extends javax.swing.JFrame {
 
     public StudentForm() {
         initComponents();
+        
+        ArrayList<Student> students = persistence.readStudent();
+        StudentTableModel tableModel = new StudentTableModel(students);
+        tbStudents.setModel(tableModel);
+        
     }
 
     /**
@@ -38,7 +45,7 @@ public class StudentForm extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbStudents = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,7 +128,7 @@ public class StudentForm extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Student List"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbStudents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -132,7 +139,7 @@ public class StudentForm extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbStudents);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -238,7 +245,7 @@ public class StudentForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbStudents;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtSurname;
