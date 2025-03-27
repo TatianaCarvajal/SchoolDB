@@ -1,5 +1,6 @@
 package persistence;
 
+import java.util.ArrayList;
 import model.Student;
 
 /**
@@ -9,5 +10,6 @@ import model.Student;
 public interface PersistenceRepository {
     
     public boolean createStudent(Student student);
+    public ArrayList<Student> readStudent();
     
 }
