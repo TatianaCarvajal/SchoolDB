@@ -5,7 +5,7 @@ package model;
  * @author tatianacarvajal
  */
 public class Student {
-    
+
     int studentCode;
     String studentName;
     String studentSurname;
@@ -15,7 +15,7 @@ public class Student {
         this.studentName = studentName;
         this.studentSurname = studentSurname;
     }
-    
+
     public int getStudentCode() {
         return studentCode;
     }
@@ -39,6 +39,4 @@ public class Student {
     public void setStudentSurname(String studentSurname) {
         this.studentSurname = studentSurname;
     }
-    
-    
 }

@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import model.Student;
 
-
 /**
  *
  * @author tatianacarvajal
@@ -24,7 +23,7 @@ public class ConnectionImplementor implements PersistenceRepository {
     String port = "3306";
 
     String path = "jdbc:mysql://" + ip + ":" + port + "/" + db;
-    
+
     public ConnectionImplementor() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -53,7 +52,6 @@ public class ConnectionImplementor implements PersistenceRepository {
 
     @Override
     public ArrayList<Student> readStudent() {
-
         ArrayList<Student> students = new ArrayList<Student>();
 
         try {
@@ -88,6 +86,21 @@ public class ConnectionImplementor implements PersistenceRepository {
             return true;
         } catch (Exception e) {
             System.out.println("Error to update the student: " + e.toString());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteStudent(int id) {
+        try {
+            String query = "delete from students where students.id = ?;";
+            CallableStatement statement = connect.prepareCall(query);
+
+            statement.setInt(1, id);
+            statement.execute();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error to delete the student: " + e.toString());
             return false;
         }
     }
