@@ -2,7 +2,6 @@ package igu;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import model.Student;
 import persistence.ConnectionImplementor;
 import persistence.PersistenceRepository;
@@ -14,14 +13,28 @@ import persistence.PersistenceRepository;
 public class StudentForm extends javax.swing.JFrame {
     
     PersistenceRepository persistence = new ConnectionImplementor();
+    private int studentSelectedRow;
+    private StudentTableModel tableModel;
 
     public StudentForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        refreshTable();  
+    }
+    
+    private void refreshTable() {
+       ArrayList<Student> students = persistence.readStudent();
+        this.tableModel = new StudentTableModel(students);
+        tbStudents.setModel(tableModel); 
+    }
+    
+    private Student buildStudent() {
+        int code = Integer.parseInt(txtId.getText());
+        String name = txtName.getText();
+        String surname = txtSurname.getText();
         
-        ArrayList<Student> students = persistence.readStudent();
-        StudentTableModel tableModel = new StudentTableModel(students);
-        tbStudents.setModel(tableModel);
-        
+        Student student = new Student(code, name, surname);
+        return student;
     }
 
     /**
@@ -71,6 +84,11 @@ public class StudentForm extends javax.swing.JFrame {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete");
 
@@ -139,6 +157,11 @@ public class StudentForm extends javax.swing.JFrame {
 
             }
         ));
+        tbStudents.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbStudentsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbStudents);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -187,18 +210,42 @@ public class StudentForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNameActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String name = txtName.getText();
-        String surname = txtSurname.getText();
-        Student student = new Student();
-        student.setStudentName(name);
-        student.setStudentSurname(surname);
+        Student student = buildStudent();
+
         boolean isSuccess = persistence.createStudent(student);
         if (isSuccess) {
             JOptionPane.showMessageDialog(null, "Student saved successfully");
+            refreshTable();
         } else {
             JOptionPane.showMessageDialog(null, "Student save failed");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        tableModel.setValueAt(txtId.getText().trim(), studentSelectedRow, 0);
+        tableModel.setValueAt(txtName.getText().trim(), studentSelectedRow, 1);
+        tableModel.setValueAt(txtSurname.getText().trim(), studentSelectedRow, 2);
+
+        Student student = buildStudent();
+        boolean isSuccess = persistence.updateStudent(student);
+        if (isSuccess) {
+            JOptionPane.showMessageDialog(null, "Student update successfully");
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Student update failed, please try again");
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tbStudentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbStudentsMouseClicked
+        if (tbStudents.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null, "No row selected");
+        } else {
+            studentSelectedRow = tbStudents.getSelectedRow();
+            txtId.setText(tableModel.getValueAt(tbStudents.getSelectedRow(), 0).toString());
+            txtName.setText(tableModel.getValueAt(tbStudents.getSelectedRow(), 1).toString());
+            txtSurname.setText(tableModel.getValueAt(tbStudents.getSelectedRow(), 2).toString());
+        }
+    }//GEN-LAST:event_tbStudentsMouseClicked
 
     /**
      * @param args the command line arguments

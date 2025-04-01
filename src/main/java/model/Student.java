@@ -10,6 +10,12 @@ public class Student {
     String studentName;
     String studentSurname;
 
+    public Student(int studentCode, String studentName, String studentSurname) {
+        this.studentCode = studentCode;
+        this.studentName = studentName;
+        this.studentSurname = studentSurname;
+    }
+    
     public int getStudentCode() {
         return studentCode;
     }

@@ -16,6 +16,10 @@ public class StudentTableModel extends AbstractTableModel {
     public StudentTableModel(ArrayList<Student> stundents) {
         this.students = stundents;
     }
+    
+    public void setStudents(ArrayList<Student> students) {
+        this.students = students;
+    }
 
     @Override
     public int getRowCount() {
@@ -46,7 +50,4 @@ public class StudentTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return columns[column];
     }
-    
-    
-
 }

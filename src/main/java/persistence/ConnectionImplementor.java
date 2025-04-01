@@ -62,15 +62,33 @@ public class ConnectionImplementor implements PersistenceRepository {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Student student = new Student();
-                student.setStudentCode(resultSet.getInt("Id"));
-                student.setStudentName(resultSet.getString("Name"));
-                student.setStudentSurname(resultSet.getString("Surname"));
+                int id = resultSet.getInt("Id");
+                String name = resultSet.getString("Name");
+                String surname = resultSet.getString("Surname");
+
+                Student student = new Student(id, name, surname);
                 students.add(student);
             }
         } catch (Exception e) {
             System.out.println("Error to show the table: " + e.toString());
         }
         return students;
+    }
+
+    @Override
+    public boolean updateStudent(Student student) {
+        try {
+            String query = "update students set name = ?, surname = ? where id = ?;";
+            CallableStatement statement = connect.prepareCall(query);
+
+            statement.setString(1, student.getStudentName());
+            statement.setString(2, student.getStudentSurname());
+            statement.setInt(3, student.getStudentCode());
+            statement.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error to update the student: " + e.toString());
+            return false;
+        }
     }
 }
