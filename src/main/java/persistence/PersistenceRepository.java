@@ -8,8 +8,12 @@ import model.Student;
  * @author tatianacarvajal
  */
 public interface PersistenceRepository {
-    
+
     public boolean createStudent(Student student);
+
     public ArrayList<Student> readStudent();
+
     public boolean updateStudent(Student student);
+
+    public boolean deleteStudent(int id);
 }

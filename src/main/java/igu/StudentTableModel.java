@@ -9,14 +9,14 @@ import model.Student;
  * @author tatianacarvajal
  */
 public class StudentTableModel extends AbstractTableModel {
-    
+
     ArrayList<Student> students;
     private final String[] columns = {"Id", "Name", "Surname"};
 
     public StudentTableModel(ArrayList<Student> stundents) {
         this.students = stundents;
     }
-    
+
     public void setStudents(ArrayList<Student> students) {
         this.students = students;
     }

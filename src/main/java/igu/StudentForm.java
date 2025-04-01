@@ -11,7 +11,7 @@ import persistence.PersistenceRepository;
  * @author tatianacarvajal
  */
 public class StudentForm extends javax.swing.JFrame {
-    
+
     PersistenceRepository persistence = new ConnectionImplementor();
     private int studentSelectedRow;
     private StudentTableModel tableModel;
@@ -19,20 +19,20 @@ public class StudentForm extends javax.swing.JFrame {
     public StudentForm() {
         initComponents();
         this.setLocationRelativeTo(null);
-        refreshTable();  
+        refreshTable();
     }
-    
+
     private void refreshTable() {
-       ArrayList<Student> students = persistence.readStudent();
+        ArrayList<Student> students = persistence.readStudent();
         this.tableModel = new StudentTableModel(students);
-        tbStudents.setModel(tableModel); 
+        tbStudents.setModel(tableModel);
     }
-    
+
     private Student buildStudent() {
         int code = Integer.parseInt(txtId.getText());
         String name = txtName.getText();
         String surname = txtSurname.getText();
-        
+
         Student student = new Student(code, name, surname);
         return student;
     }
@@ -70,12 +70,6 @@ public class StudentForm extends javax.swing.JFrame {
 
         jLabel3.setText("Surname");
 
-        txtName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameActionPerformed(evt);
-            }
-        });
-
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +85,11 @@ public class StudentForm extends javax.swing.JFrame {
         });
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,10 +204,6 @@ public class StudentForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNameActionPerformed
-
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         Student student = buildStudent();
 
@@ -229,7 +224,7 @@ public class StudentForm extends javax.swing.JFrame {
         Student student = buildStudent();
         boolean isSuccess = persistence.updateStudent(student);
         if (isSuccess) {
-            JOptionPane.showMessageDialog(null, "Student update successfully");
+            JOptionPane.showMessageDialog(null, "The student has been successfully updated");
             refreshTable();
         } else {
             JOptionPane.showMessageDialog(null, "Student update failed, please try again");
@@ -246,6 +241,18 @@ public class StudentForm extends javax.swing.JFrame {
             txtSurname.setText(tableModel.getValueAt(tbStudents.getSelectedRow(), 2).toString());
         }
     }//GEN-LAST:event_tbStudentsMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int id = Integer.parseInt(txtId.getText());
+        boolean isSuccess = persistence.deleteStudent(id);
+
+        if (isSuccess) {
+            JOptionPane.showMessageDialog(null, "The student has been successfully remove");
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Student deletion failed, please try again");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
